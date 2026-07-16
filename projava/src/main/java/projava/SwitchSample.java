@@ -2,7 +2,9 @@ package projava;
 
 public class SwitchSample {
     public static void main(String[] args) {
-        int number = 10;
+        java.util.Scanner scanner = new java.util.Scanner(System.in);
+        System.out.print("数字を入力してください: ");
+        int number = scanner.nextInt();
         switch (number) {
             case 1:
             case 2:

@@ -1,0 +1,4 @@
+projava/.gradle
+projava/build
+target
+*.class
