@@ -1,0 +1,27 @@
+{
+    "name": "Java Study",
+    "image": "mcr.microsoft.com/devcontainers/java:1-17-bullseye",
+    "features": {
+        "ghcr.io/devcontainers/features/java:1": {
+            "version": "17",
+            "installGradle": "true",
+            "gradleVersion": "8.5"
+        }
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "vscjava.vscode-java-pack",
+                "vscjava.vscode-gradle"
+            ],
+            "settings": {
+                "java.configuration.updateBuildConfiguration": "interactive",
+                "java.compile.nullAnalysis.mode": "automatic",
+                "editor.formatOnSave": true
+            }
+        }
+    },
+    "workspaceFolder": "/workspaces/Java_Study",
+    "postCreateCommand": "cd projava && ./gradlew dependencies --no-daemon -q",
+    "remoteUser": "vscode"
+}
