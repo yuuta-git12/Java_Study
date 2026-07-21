@@ -7,10 +7,13 @@ public class Main {
     public static void main(String[] args) {
         //TIP ハイライトされたテキストにキャレットがある状態で <shortcut actionId="ShowIntentionActions"/> を押すと
         // IntelliJ IDEA によるその修正案を確認できます。
-        Item item = new Item();
+        Item item = new Item("desktop");
+
+        System.out.println("Hello and welcome! Item: " + item.getName());
+
         // itemのメンバ変数nameに値を設定
         item.setName("Laptop");
-        System.out.printf("Hello and welcome! Item: %s", item.getName());
+        System.out.println("Hello and welcome! Item: " + item.getName());
 
         // エラーになる書き方
         // item.name = "Desktop";
