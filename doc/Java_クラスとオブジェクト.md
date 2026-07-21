@@ -98,6 +98,162 @@ System.out.println(productName); // 出力: Laptop
   - オブジェクトのデータへのアクセスにsetter/getterメソッドを使用することで、データの整合性を保つことができる。
   - メンバ変数を`private`にすることで、外部から直接アクセスできなくし、メソッドを通じてのみアクセスできるようにする。
 
-## オブジェクト指向について
+## メソッドのオーバーロード
+- メソッドのオーバーロードとは、同じ名前のメソッドを複数定義することができる機能である。
+- メソッドのオーバーロードは、引数の型や数が異なる場合に有効であり、同じ名前のメソッドを使い分けることができる。
+- メソッドのオーバーロードは、コードの可読性を向上させ、同じ処理を行うメソッドをまとめることができる。
+```java
+public class Calculator {
+    // 2つの整数を加算するメソッド
+    public int add(int a, int b) {
+        return a + b;
+    }
+    // 2つの小数を加算するメソッド
+    public double add(double a, double b) {
+        return a + b;
+    }
+    // 3つの整数を加算するメソッド
+    public int add(int a, int b, int c) {
+        return a + b + c;
+    }
+}
+```
+### シグネチャ
+- メソッド名と引数の型・数を組み合わせたものをシグネチャと呼ぶ。
+### 可変長引数
+- 可変長引数とは、メソッドの引数の数が可変であることを示す機能である。
+- 可変長引数は、引数の型の後に`...`を付けることで定義することができる。
+- 可変長引数は、引数の数が不定である場合に便利であり、配列として扱うことができる。
+```java
+public class Calculator {
+    // 可変長引数を使用した加算メソッド
+    public int add(int... numbers) {
+        int sum = 0;
+        for (int number : numbers) {
+            sum += number;
+        }
+        return sum;
+    }
+}
+```
+### メソッド呼び出しの優先度
+- メソッド呼び出しの優先度は、引数の型や数が一致するメソッドが優先される。
+- 引数の型や数が一致するメソッドが複数存在する場合は、最も具体的な型のメソッドが優先される。
+- 例: `add(int a, int b)`と`add(double a, double b)`が存在する場合、`add(1, 2)`は`add(int a, int b)`が呼び出され、`add(1.0, 2.0)`は`add(double a, double b)`が呼び出される。
+- 優先順位
+  1. 引数の型と数が完全に一致するメソッド
+  2. 引数の型が一致するメソッド（自動型変換が可能な場合）
+  3. 可変長引数を使用したメソッド
+
+## オブジェクトの初期化
+- メンバ変数に最初に値を設定することをオブジェクトの初期化という
+- メンバ変数の初期化方法
+  - デフォルトの初期値を利用
+  - クラス定義の際にメンバ変数に値を設定
+  - コンストラクタを使用
+### デフォルトの初期値を利用
+- メンバ変数は、データ型に応じたデフォルトの初期値が設定される
+- デフォルトの初期値は以下の通り 
+
+| データ型            | 値     |
+|:--------------------|:-------|
+| byte,short,int,long | 0      |
+| float,double        | 0.0    |
+| boolean             | false  |
+| char                | \u0000 |
+| String              | null   |
+
+```java
+public class Product {
+    private String name; // デフォルト値はnull
+    private int price; // デフォルト値は0
+
+    public void printInfo() {
+        System.out.println("商品名: " + name);
+        System.out.println("価格: " + price);
+    }
+}
+```
+### コンストラクタを使用
+- コンストラクタとは、オブジェクトが生成される際に呼び出される特殊なメソッドで、オブジェクトの初期化を行う。
+- **コンストラクタは、クラス名と同じ名前を持ち、戻り値の型を持たない。**(他の言語と違い__constructor__は戻り値の型を持たない)
+- コンストラクタは、オブジェクト生成時に自動的に呼び出され、メンバ変数の初期化を行う。
+- コンストラクタは、引数を持つことができ、オーバーロードすることも可能である。
+```java
+public class Product {
+    private String name;
+    private int price;
+
+    // コンストラクタ
+    public Product(String name, int price) {
+        this.name = name;
+        this.price = price;
+    }
+
+    public void printInfo() {
+        System.out.println("商品名: " + name);
+        System.out.println("価格: " + price);
+    }
+}
+```
+#### デフォルトコンストラクタ
+- コンストラクタを定義しない場合、Javaコンパイラは自動的にデフォルトコンストラクタを生成する。
+- デフォルトコンストラクタは、引数を持たず、メンバ変数をデフォルトの初期値で初期化する。
+- 例: デフォルトコンストラクタを使用したオブジェクト生成
+```java
+public class Product {
+    private String name;
+    private int price;
+    // デフォルトコンストラクタ
+    public Product() {
+        this.name = "未設定";
+        this.price = 0;
+    }
+    public void printInfo() {
+        System.out.println("商品名: " + name);
+        System.out.println("価格: " + price);
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        Product product = new Product(); // デフォルトコンストラクタを使用してオブジェクトを生成
+        product.printInfo(); // 出力: 商品名: 未設定
+    }
+}
+```
+### コンストラクタのオーバーロード
+- コンストラクタのオーバーロードとは、同じ名前のコンストラクタを複数定義することができる機能である。
+- コンストラクタのオーバーロードは、引数の型や数が異なる場合に有効であり、同じ名前のコンストラクタを使い分けることができる。
+- コンストラクタのオーバーロードは、コードの可読性を向上させ、同じ処理を行うコンストラクタをまとめることができる。
+```java
+public class Product {
+    private String name;
+    private int price;
+    // 引数なしのコンストラクタ
+    public Product() {
+        this.name = "未設定";
+        this.price = 0;
+    }
+    // 引数ありのコンストラクタ
+    public Product(String name, int price) {
+        this.name = name;
+        this.price = price;
+    }
+    public void printInfo() {
+        System.out.println("商品名: " + name);
+        System.out.println("価格: " + price);
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        Product product1 = new Product(); // 引数なしのコンストラクタを使用
+        product1.printInfo(); // 出力: 商品名: 未設定
+        Product product2 = new Product("Laptop", 1000); // 引数ありのコンストラクタを使用
+        product2.printInfo(); // 出力: 商品名: Laptop
+    }
+}
+```
+    
+### オブジェクト指向について
 - オブジェクト指向とは、プログラムをオブジェクトの集合として捉え、オブジェクト同士の関係や振る舞いを中心に設計する考え方。
 - 物理的に存在する「商品」や概念的な「ユーザー」など、現実世界のものをプログラム上で表現するために使われる。
