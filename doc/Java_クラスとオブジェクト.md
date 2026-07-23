@@ -1,4 +1,4 @@
-# クラスとオブジェクト
+# Javaのクラスとオブジェクト
 ## クラスとは
 - クラスとは、オブジェクトの設計図のようなもの。
 - クラスを定義することで、オブジェクトの属性（フィールド）や動作（メソッド）をまとめて表現することができる。
@@ -253,7 +253,73 @@ public class Main {
     }
 }
 ```
+## static変数・staticメソッド
+### static変数
+- static変数は、クラスに属する変数であり、オブジェクトに属する変数ではない。
+- static変数は、クラスがロードされる際にメモリに確保され、すべてのオブジェクトで共有される。
+- static変数は、クラス名を使ってアクセスすることができる。
+```java
+public class Product {
+    private String name;
+    private int price;
+    private static int productCount = 0; // static変数の宣言
+
+    public Product(String name, int price) {
+        this.name = name;
+        this.price = price;
+        productCount++; // オブジェクトが生成されるたびにカウントを増やす
+    }
+
+    public static int getProductCount() {
+        return productCount;
+    }
+
+    public void printInfo() {
+        System.out.println("商品名: " + name);
+        System.out.println("価格: " + price);
+    }
+}
+```
+### staticメソッド
+- staticメソッドは、クラスに属するメソッドであり、オブジェクトに属するメソッドではない。
+- staticメソッドは、クラスがロードされる際にメモリに確保され、すべてのオブジェクトで共有される。
+- staticメソッドは、クラス名を使ってアクセスすることができる。
+- staticメソッドは、static変数や他のstaticメソッドにアクセスすることができるが、非staticメソッドや非static変数にはアクセスできない。
+```java
+public class Product {
+    private String name;
+    private int price;
+    private static int productCount = 0; // static変数の宣言
     
-### オブジェクト指向について
+    static public int getProductCount() {
+        // staticメソッドからstatic変数にアクセスすることができる
+        return productCount; // static変数にアクセス
+        // return this.name; // エラー: staticメソッドから非static変数にアクセスできない
+    }
+    public void printInfo() {
+        System.out.println("商品名: " + name);
+        System.out.println("価格: " + price);
+        // インスタンスメソッドからstatic変数へアクセスすることは可能
+        System.out.println("回数: " + productCount);
+    }
+}
+```
+## オブジェクトのライフサイクル
+- オブジェクトが生成されてから破棄されるまでの期間のこと
+- オブジェクトのライフサイクルは以下の3つのフェーズからなる
+  - **生成**: `new`キーワードによりオブジェクトが生成され、メモリに確保される
+  - **使用**: オブジェクトのメソッドやフィールドを通じて処理が行われる
+  - **破棄**: オブジェクトへの参照がなくなった場合、ガベージコレクタによってメモリが解放される
+### ガベージコレクタ
+- JVMにある生成されたオブジェクトを管理する機能
+- 使用されていないオブジェクトの検出・破棄を行う（メモリ領域の解放を行ってくれる）
+- オブジェクトの参照を切るにはオブジェクトに`null`を代入する、または別のオブジェクトを代入する
+- ガベージコレクションのタイミングはJVMが自動的に判断するため、プログラマが明示的に制御することはできない
+- `System.gc()`を呼び出すことでガベージコレクションを促すことができるが、実行のタイミングはJVMに依存する
+
+
+## オブジェクト指向について
 - オブジェクト指向とは、プログラムをオブジェクトの集合として捉え、オブジェクト同士の関係や振る舞いを中心に設計する考え方。
 - 物理的に存在する「商品」や概念的な「ユーザー」など、現実世界のものをプログラム上で表現するために使われる。
+
+#レビュー済み
