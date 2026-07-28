@@ -9,11 +9,11 @@ public class Main {
         // IntelliJ IDEA によるその修正案を確認できます。
         Item item = new Item("desktop");
 
-        System.out.println("Hello and welcome! Item: " + item.getName());
+        System.out.println("Hello and welcome! Item: " + item.name());
 
-        // itemのメンバ変数nameに値を設定
-        item.setName("Laptop");
-        System.out.println("Hello and welcome! Item: " + item.getName());
+        // recordは不変のため、setNameではなく新しいインスタンスを生成して置き換える
+        item = new Item();
+        System.out.println("Hello and welcome! Item: " + item.name());
 
         // エラーになる書き方
         // item.name = "Desktop";
