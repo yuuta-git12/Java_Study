@@ -8,7 +8,7 @@
 - 新たに定義されるクラス
 - サブクラスにはスーパークラスのメンバ（変数、メソッド）が引き継がれる
 - 差分プログラミング：サブクラスに差分のメンバを定義することで機能拡張すること
-- *複数のスーパークラスを継承するサブクラスは定義できない*
+- **複数のスーパークラスを継承するサブクラスは定義できない**
 
 - サブクラスの定義例
 ```java
@@ -118,7 +118,7 @@ public final class String{}
 ```
 - `final修飾子`をつけられたメソッドは**オーバーライドできない**
 ```java
-// 構文 ➡️ [修飾子] final 戻り値の型　メソッド名(引数リスト){}
+// 構文 ➡️ [修飾子] final 戻り値の型 メソッド名(引数リスト){}
 public final void methodA(){}
 ```
 ## 継承関係におけるコンストラクタの扱い
@@ -170,7 +170,7 @@ class Dog extends Animal {
 - フィールド（コンポーネント）、コンストラクタ、アクセサメソッドなどを簡潔な構文で自動生成できるクラス
 ```java
 // 構文
-[修飾子]　record レコード名([コンポーネント]){}
+[修飾子] record レコード名([コンポーネント]){}
 // コンポーネントとしてidとnameを持つレコード
 public record Item(int id, String name){}
 ```
@@ -210,4 +210,126 @@ public record Item(int id, String name) {
 #### レコードクラスのメンバ
 - コンポーネント以外のフィールド（インスタンスフィールド）は追加できない
 - static変数やstaticメソッド、独自のインスタンスメソッドは追加で定義できる
+
+### レコードクラスのまとめ
+- 使い所が難しそう。慣れないうちは通常のクラス定義で書いた方が良さそう
+
 ## 抽象クラス
+### 抽象クラス（親クラス）
+- 継承させることが前提のクラス
+- 抽象メソッドを持てる。ただし、必須ではない
+- 具象メソッド、メンバ変数も定義できる
+- インスタンス化できない（インスタンスの生成はできない）
+- 共通で利用したいメソッドは具象メソッドで定義
+- 各サブクラスで個別に実装が変わるものは抽象メソッドで定義する
+
+```java
+// 構文 ➡️ [修飾子] abstract class クラス名 {}
+public abstract class Shape {
+    protected String name;
+
+    public Shape(String name) {
+        this.name = name;
+    }
+
+    // 抽象メソッド（具象クラスでの実装が必須）
+    public abstract double area();
+
+    // 具象メソッド（共通処理はここにまとめる）
+    public void printName() {
+        System.out.println(name);
+    }
+}
+```
+### 抽象メソッド
+- `abstract修飾子`をつけて宣言する、実装（メソッド本体）を持たないメソッド
+- 抽象クラスまたはインタフェースにのみ定義できる
+- サブクラス（具象クラス）でオーバーライドして実装することが必須
+- 抽象メソッドを1つでも持つクラスは、抽象クラスとして宣言する必要がある
+```java
+// 構文 ➡️ [修飾子] abstract 戻り値の型 メソッド名(引数リスト);
+public abstract double area();
+```
+### 具象クラス（サブクラス）
+- 抽象クラスを継承し、継承した抽象メソッドを全て実装（オーバーライド）したクラス
+- インスタンス化が可能
+- 継承した抽象メソッドを1つでも実装していない場合、そのサブクラスも抽象クラスとして宣言する必要がある
+```java
+public class Circle extends Shape {
+    private double radius;
+
+    public Circle(String name, double radius) {
+        super(name);
+        this.radius = radius;
+    }
+
+    @Override
+    public double area() {
+        return Math.PI * radius * radius;
+    }
+}
+```
+### 具象メソッド
+- 実装（メソッド本体）を持つ通常のメソッド
+- 抽象クラス、通常のクラスのどちらにも定義できる
+- 共通の処理を抽象クラスの具象メソッドとして定義しておくことで、サブクラス間で処理を共有できる
+
+## インタフェース
+- `interface`キーワードを使用して宣言する
+- アクセス修飾子は`public`かパッケージプライベートを使用
+- `extends`で他のインタフェースを継承することも可能
+- インスタンス変数は持たない
+
+```java
+// 構文
+[修飾子] interface インタフェース名 [extends インタフェース]{}
+
+// 例
+public interface Test {
+  // 定数は全てpublic static finalが暗黙的に付く
+  int EXCELLENT = 100;
+  public int VERY_GOOD = 90;
+  static int GOOD = 80;
+  final int AVERAGE = 70;
+  
+  // メソッドは全て暗黙的にpublic abstractが付く
+  void foo();
+  public int bar();
+  abstract boolean baz();
+}
+```
+
+### インタフェース内に定義できるもの
+- 抽象メソッド
+- 定数
+- `default`メソッド
+- `static`メソッド
+- `private`メソッド
+
+### インタフェースの実装
+- `implements`キーワードを使用してクラスにインタフェースを実装する
+- 1つのクラスで複数のインタフェースを実装できる（多重実装）
+- インタフェースの抽象メソッドは全て実装（オーバーライド）する必要がある。実装しない場合は、そのクラスを抽象クラスとして宣言する必要がある
+```java
+// 構文 ➡️ [修飾子] class クラス名 implements インタフェース名1, インタフェース名2 {}
+
+interface Flyable {
+    void fly();
+}
+
+interface Swimmable {
+    void swim();
+}
+
+class Duck implements Flyable, Swimmable {
+    @Override
+    public void fly() {
+        System.out.println("Duck is flying");
+    }
+
+    @Override
+    public void swim() {
+        System.out.println("Duck is swimming");
+    }
+}
+```
