@@ -1,0 +1,25 @@
+# 主要な例外オブジェクト
+## Throwableクラス
+- 例外のスーパークラス
+- Throwableクラスを継承したクラスが例外クラスとなる
+- Throwableクラスには、ErrorクラスとExceptionクラスがある
+## Exceptionクラス
+- チェック例外と非チェック例外の両方を表すクラス
+- Exceptionクラスを継承したクラスのうちRuntimeExceptionとそのサブクラス以外はチェック例外となる
+### Exceptionクラスのサブクラス
+- IOException:ファイルやネットワークの入出力処理に失敗した場合にスローされる例外
+  - サブクラス：
+    - FileNotFoundException：ファイルが見つからない場合にスローされる例外
+    - EOFException：入力ストリームの終端に達した場合にスローされる例外
+    - SocketException：ソケット通信に失敗した場合にスローされる例外
+- SQLException：データベースアクセスに失敗した場合にスローされる例外
+- RuntimeException：実行時に発生する例外のスーパークラス
+- ClassNotFoundException：クラスが見つからない場合にスローされる例外
+### RuntimeExceptionクラスのサブクラス(非チェック例外)
+- NullPointerException：null参照をした場合にスローされる例外
+- ArrayIndexOutOfBoundsException：配列のインデックスが範囲外の場合にスローされる例外
+- IllegalArgumentException：不正な引数が渡された場合にスローされる例外
+- ArithmeticException：算術演算でエラーが発生した場合にスローされる例外
+- ClassCastException：不正な型変換が行われた場合にスローされる例外
+- NumberFormatException：文字列を数値に変換できない場合にスローされる例外
+## Errorクラス

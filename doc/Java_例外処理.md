@@ -8,6 +8,20 @@
 ### 例外がスロー(throw)される
 - 例外が発生すると、Java仮想マシン(JVM)は例外オブジェクトを生成し、スローする
 - スローされた例外は、呼び出し元のメソッドに伝播される
+### 例外の種類：
+- チェック例外(Checked Exception)：
+    - コンパイル時にチェックされる例外
+    - **必須の例外処理を行う必要がある**
+    - 例外処理を行わないとコンパイルエラーになる
+    - 例：IOException, SQLExceptionなど
+- 非チェック例外(Unchecked Exception)：
+    - コンパイル時にチェックされない例外
+    - **必須の例外処理を行う必要はない**
+    - 実行時に発生する可能性がある例外
+    - 例：NullPointerException, ArrayIndexOutOfBoundsExceptionなど
+### 例外処理をしないと起こること
+- プログラムの突然の終了
+- データの破損や不整合
 ### 例外オブジェクト：
 - 例外が発生したときに生成されるオブジェクト
 - 例外オブジェクトには、例外の種類や発生場所などの情報が含まれる
@@ -35,18 +49,6 @@
             - RuntimeException
                 - NullPointerException
                 - ArrayIndexOutOfBoundsException
-### 例外の種類：
-- チェック例外(Checked Exception)：
-    - コンパイル時にチェックされる例外
-    - 例外処理を行わないとコンパイルエラーになる
-    - 例：IOException, SQLExceptionなど
-- 非チェック例外(Unchecked Exception)：
-    - コンパイル時にチェックされない例外
-    - 実行時に発生する可能性がある例外
-    - 例：NullPointerException, ArrayIndexOutOfBoundsExceptionなど
-### 例外処理をしないと起こること
-- プログラムの突然の終了
-- データの破損や不整合
 ---
 ## カスタム例外
 ### 構文
@@ -95,6 +97,9 @@ public class Main {
 }
 ```
 ### try-catchによる例外のキャッチパターン
+- try-catch
+- try-catch-finally
+- try-catch-finally 複数のcatchブロック
 #### try-catch-finally文
 - tryブロックで例外が発生した場合、catchブロックで例外をキャッチし、finallyブロックで必ず実行される処理
 - finallyブロックの特徴
