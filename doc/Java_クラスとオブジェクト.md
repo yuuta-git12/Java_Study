@@ -186,6 +186,7 @@ public class Product {
     private int price;
 
     // コンストラクタ
+    // 戻り値の型を持たない。戻り値の型がある場合はただのメソッドになる 
     public Product(String name, int price) {
         this.name = name;
         this.price = price;
@@ -375,5 +376,33 @@ public class Product {
   - 引数ありコンストラクタを1つでも書くと、デフォルトコンストラクタは自動生成されなくなる
 - `public static main()`内では`this.変数名`の記述はできない
   - `static`メソッドはオブジェクトに紐づかないため、`this`（現在のオブジェクトへの参照）が存在しない
+
+## クラス宣言に付与できる修飾子
+- トップレベルクラス（1ファイルにつき1つ書けるような通常のクラス）に付与できる修飾子
+  - `public` / 省略（パッケージプライベート）
+  - `final`
+  - `abstract`
+  - `sealed`
+  - `non-sealed`
+  - `strictfp`（Java17以降非推奨）
+  - `private`と`static`は使用不可（コンパイルエラーになる）
+    ```java
+    private class Foo { }   // NG: modifier private not allowed here
+    static class Bar { }    // NG: illegal combination of modifiers
+    ```
+- ネストしたクラス（他のクラスの内部で定義するメンバークラス）に付与できる修飾子
+  - 上記に加えて`private`・`protected`・`static`も使用可能
+    ```java
+    class Outer {
+        public static class A { }
+        private class B { }
+        protected class C { }
+        static class D { }
+    }
+    ```
+- 組み合わせ上の注意
+  - `final`と`abstract`は同時に付与不可（矛盾するため）
+  - `sealed`は`permits`句、または同一ファイル内の直接サブクラスによる暗黙的な許可リストが必要
+  - `non-sealed`は`sealed`クラスを継承するサブクラスに付与し、そのクラス以降は継承を自由に開放する
 
 #レビュー済み
