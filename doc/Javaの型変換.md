@@ -12,6 +12,29 @@ int result1 = b + s; // bとsはint型に昇格
 float f = 5.5f;
 double result2 = f + result1; // fはdouble型に昇格
 ```
+- 例:
+```java
+int i = 10;
+double d = 5.5;
+double result = i + d; // iはdouble型に昇格
+System.out.println(result); // 出力: 15.5
+```
+- double型を引数に持つメソッドにint型の値を渡す場合、int型は自動的にdouble型に変換されます。
+- 例:
+```java
+public class Main {
+    public static void main(String[] args) {
+        int i = 10;
+        double d = 5.5;
+        double result = add(i, d); // iはdouble型に昇格
+        System.out.println(result); // 出力: 15.5
+    }
+    public static double add(double a, double b) {
+        return a + b;
+    }
+}
+```
+
 ## 明示的な型変換
 - 明示的な型変換（explicit type conversion）は、プログラマが明示的に型変換を行うことを指します。これにはキャスト演算子を使用します。キャスト演算子は、変換したい型を括弧で囲んで指定します。
 - 例:
@@ -33,6 +56,17 @@ System.out.println(i); // 出力: 9
 int largeValue = 300;
 byte b = (byte) largeValue; // オーバーフローが発生
 System.out.println(b); // 出力: 44 (300 % 256 = 44)
+```
+## オートボクシングとアンボクシング
+- Javaでは、プリミティブ型と対応するラッパークラス（Integer, Double, Floatなど）との間で自動的に変換が行われることがあります。
+- これをオートボクシング（autoboxing）とアンボクシング（unboxing）と呼びます。
+- オートボクシングは、プリミティブ型の値をラッパークラスのオブジェクトに自動的に変換することを指します。
+- アンボクシングはその逆で、ラッパークラスのオブジェクトをプリミティブ型の値に自動的に変換することを指します。
+- 例:
+```java
+Integer intObj = 10; // オートボクシング: int型からIntegerオブジェクトに変換
+int intValue = intObj; // アンボクシング: Integerオブジェクトからint型に変換
+System.out.println(intValue); // 出力: 10
 ```
 
 #レビュー済み

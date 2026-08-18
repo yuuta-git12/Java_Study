@@ -132,6 +132,7 @@ public class Main {
 ```
 ### multi-catch文
 - 複数の例外を1つのcatchブロックで処理することができる
+- multi-catch文の場合,例外の参照変数`e`は,finalとして扱われるため、catchブロック内で再代入することはできない
 - 構文：
 ```java
 try {

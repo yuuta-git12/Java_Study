@@ -109,6 +109,54 @@ System.out.println(a.name);  // "animal"（コンパイル時の型＝Animal で
 a.staticMethod();             // "Animal static"（コンパイル時の型で決まる）
 a.instanceMethod();           // "Dog instance"（実行時の型＝Dog で決まる）
 ```
+### 継承関係のメンバアクセスについて
+```
+スーパークラス型で宣言した変数にサブクラスのインスタンスを入れた場合
+その変数ではスーパークラスのメンバにアクセスしてしまう？
+
+はい、その理解はJavaではフィールド（メンバ変数）とメソッドで挙動が異なるという点がポイントです。
+```
+
+- メソッドの場合 → サブクラスのメソッドが呼ばれる（オーバーライド） 
+- メソッドは**動的束縛（実行時の実際の型で決まる）**なので、オーバーライドされていればサブクラスの実装が呼ばれます。
+```java
+class Super {
+void show() { System.out.println("Super"); }
+}
+class Sub extends Super {
+@Override
+void show() { System.out.println("Sub"); }
+}
+
+Super s = new Sub();
+s.show();  // "Sub" が出力される（実際のインスタンスの型で決まる）
+```
+
+- メンバ変数の場合 → スーパークラスのメンバ変数にアクセスする（隠蔽） 
+- 一方、メンバ変数は**静的束縛（宣言した型で決まる）**なので、変数の宣言型のメンバ変数にアクセスします。
+- オーバーライドではなく「隠蔽（hiding）」と呼ばれます。
+```java
+class Super {
+String name = "Super";
+}
+class Sub extends Super {
+String name = "Sub";
+}
+
+Super s = new Sub();
+System.out.println(s.name);  // "Super" が出力される！（宣言型で決まる）
+
+Sub sub = new Sub();
+System.out.println(sub.name); // "Sub"
+```
+- 決まり方
+  - 宣言型 Super s = new Sub() の場合 
+    - メソッド	実行時の実際の型（動的束縛）	サブクラスの実装が呼ばれる 
+    - メンバ変数	宣言時の型（静的束縛）	スーパークラスのメンバ変数にアクセス
+- この違いは実務でもハマりやすいポイント
+    - 「メンバ変数を直接publicにせず、getter経由でアクセスすべき」という設計指針の理由の一つにもなっている
+    - getterはメソッドなのでオーバーライドが効くため
+---
 ### finalメソッド・finalクラス
 - メソッド、クラスの宣言時に`final修飾子`をつけて定義することが可能
 - `final修飾子`をつけられたクラスは**継承ができない**
