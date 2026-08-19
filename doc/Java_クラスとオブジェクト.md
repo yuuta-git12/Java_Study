@@ -54,6 +54,8 @@ public int getPrice() {
 - クラス内で定義された変数は、クラスのスコープ内で有効であり、クラスの外部からはアクセスできない。
 - メソッド内で定義された変数は、メソッドのスコープ内で有効であり、メソッドの外部からはアクセスできない。
 - `this`キーワードは、現在のオブジェクトを指す参照であり、メンバ変数とローカル変数の名前が同じ場合に、メンバ変数を明示的に参照するために使用される。
+- `this`キーワードは以下の場合、省略可能である
+  - メンバ変数とローカル変数の名前が異なる場合
 ```java
 public class Product {
     private String name; // メンバ変数の宣言
@@ -404,5 +406,59 @@ public class Product {
   - `final`と`abstract`は同時に付与不可（矛盾するため）
   - `sealed`は`permits`句、または同一ファイル内の直接サブクラスによる暗黙的な許可リストが必要
   - `non-sealed`は`sealed`クラスを継承するサブクラスに付与し、そのクラス以降は継承を自由に開放する
+
+## コンストラクタの注意事項
+- サブクラスのコンストラクタで明示的に`super(...)`や`this(...)`の呼び出しを書かなかった場合
+  - コンパイラが自動的に**引数なしのsuper()**をコンストラクタの先頭に挿入する
+
+```java
+class Animal {
+  Animal() {
+    System.out.println("Animal constructor");
+  }
+}
+
+class Dog extends Animal {
+  Dog() {
+    // ここに暗黙的に super(); が挿入される
+    System.out.println("Dog constructor");
+  }
+}
+```
+```
+実行結果:
+Animal constructor
+Dog constructor
+```
+### 注意点
+- 1. 親クラスに引数なしコンストラクタが無いとエラーになる
+```java
+class Animal {
+  Animal(String name) {  // 引数ありのみ定義
+    System.out.println("Animal: " + name);
+  }
+}
+
+class Dog extends Animal {
+  Dog() {
+    // 暗黙的に super(); を呼ぼうとするが、
+    // Animal() が存在しないためコンパイルエラー
+  }
+}
+```
+このエラーを避けるには、明示的に`super(name);`のように対応する引数付きコンストラクタを呼ぶ必要があります。
+
+- 2. 明示的な`super(...)`や`this(...)`がある場合は、暗黙の挿入は行われない
+```java
+class Dog extends Animal {
+  Dog() {
+    super("Pochi");  // これが優先され、super() は挿入されない
+  }
+}
+```
+- 3. `super(...)`または `this(...)` は必ずコンストラクタの最初の文でなければならない
+  - これも上記の仕組み(暗黙的に先頭に挿入される)と整合性が取れています。
+- 4. Objectクラスまで連鎖する
+  - すべてのクラスは最終的に`Object`を継承しているので、コンストラクタ呼び出しの連鎖は最終的に`Object()`まで遡ります。
 
 #レビュー済み
